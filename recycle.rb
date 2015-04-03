@@ -41,12 +41,25 @@ class BinController
     @recycling_bins_array = RecyclingBin.where(latitude: @kenny_lat-0.005..@kenny_lat+0.005, longitude: @kenny_long-0.005..@kenny_long+0.005)
   end
 
+  # def view
+  #   result = @recycling_bins_array.map do |recycling_bin|
+  #     @borough = recycling_bin[:borough]
+  #   "#{recycling_bin[:address]}"
+  #   end.join("\n")
+
+  #   puts
+  #   puts "These are the recycling bins within approximately half a mile of you in #{@borough}:"
+  #   puts
+  #   puts result
+  # end
+
   def view
     result = @recycling_bins_array.map do |recycling_bin|
       @borough = recycling_bin[:borough]
-    "#{recycling_bin[:address]}"
+      call = JSON.parse(open("https://maps.googleapis.com/maps/api/geocode/json?latlng=#{recycling_bin[:latitude]},#{recycling_bin[:longitude]}").read)
+      inner_hash = call.access("results.0")
+      inner_hash.access("formatted_address").split(",")[0]
     end.join("\n")
-
     puts
     puts "These are the recycling bins within approximately half a mile of you in #{@borough}:"
     puts
