@@ -3,22 +3,6 @@ require 'open-uri'
 require_relative 'config/environment'
 require 'vine'
 
-# def start
-
-# end
-
-
-# # user_input = long, lat
-# results = JSON.parse(open("https://data.cityofnewyork.us/resource/sxx4-xhzg.json").read, symbolize_names: true)
-# # puts results
-
-# results = results.each {|result| RecylingBin.create(Borough: result[:Borough], Address: result[:Address])}
-
-
-# puts results[Borough]
-
-# kenny's geodata.round(4)
-
 class BinController
 
   def initialize
@@ -41,17 +25,17 @@ class BinController
     @recycling_bins_array = RecyclingBin.where(latitude: @kenny_lat-0.005..@kenny_lat+0.005, longitude: @kenny_long-0.005..@kenny_long+0.005)
   end
 
-  # def view
-  #   result = @recycling_bins_array.map do |recycling_bin|
-  #     @borough = recycling_bin[:borough]
-  #   "#{recycling_bin[:address]}"
-  #   end.join("\n")
+  def view
+    result = @recycling_bins_array.map do |recycling_bin|
+      @borough = recycling_bin[:borough]
+    "#{recycling_bin[:address]}"
+    end.join("\n")
 
-  #   puts
-  #   puts "These are the recycling bins within approximately half a mile of you in #{@borough}:"
-  #   puts
-  #   puts result
-  # end
+    puts
+    puts "These are the recycling bins within approximately half a mile of you in #{@borough}:"
+    puts
+    puts result
+  end
 
   def view
     result = @recycling_bins_array.map do |recycling_bin|
